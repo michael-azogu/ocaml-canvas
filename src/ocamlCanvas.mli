@@ -371,10 +371,10 @@ module V1 : sig
     val to_int32 : t -> Int32.t
     (** [to_int c] converts a color [c] to its 32-bit integer representation *)
 
-    val transpBlack : t
+    val transparent_black : t
     (** Predefined transparent black color *)
 
-    val transpWhite : t
+    val transparent_white : t
     (** Predefined transparent white color *)
 
     val black : t
@@ -435,7 +435,7 @@ module V1 : sig
     val thin : weight
     (** Predefined thin weight *)
 
-    val extraLight : weight
+    val extra_light : weight
     (** Predefined extraLight weight *)
 
     val light : weight
@@ -447,13 +447,13 @@ module V1 : sig
     val medium : weight
     (** Predefined medium weight *)
 
-    val semiBold : weight
+    val semi_bold : weight
     (** Predefined semiBold weight *)
 
     val bold : weight
     (** Predefined bold weight *)
 
-    val extraBold : weight
+    val extra_bold : weight
     (** Predefined extraBold weight *)
 
     val black : weight
@@ -475,7 +475,7 @@ module V1 : sig
         {- {!Exception.Not_initialized} if {!Backend.init} was not called}
         {- {!Invalid_argument} if either component of [size] is outside the range 1-32767}} *)
 
-    val createFromPNG : string -> t React.event
+    val create_from_png : string -> t React.event
     (** [createFromPNG filename] creates an image data with
         the contents of PNG file [filename]. The returned
         event will be triggered once the image is loaded.
@@ -485,7 +485,7 @@ module V1 : sig
         {- {!Exception.Not_initialized} if {!Backend.init} was not called}
         {- {!Exception.Read_png_failed} if the PNG file could not be read}} *)
 
-    val getSize : t -> (int * int)
+    val get_size : t -> (int * int)
     (** [getSize id] returns the size of image data [id] *)
 
     val fill : t -> Color.t -> unit
@@ -513,17 +513,17 @@ module V1 : sig
         {ul
         {- {!Invalid_argument} if either component of [size] is outside the range 1-32767}} *)
 
-    val getPixel : t -> (int * int) -> Color.t
+    val get_pixel : t -> (int * int) -> Color.t
     (** [getPixel id pos] returns the color of the pixel at position
         [pos] in image data [id]. If [pos] is outside the image
         bounds, returns the transparent black color. *)
 
-    val putPixel : t -> (int * int) -> Color.t -> unit
+    val put_pixel : t -> (int * int) -> Color.t -> unit
     (** [putPixel id pos c] sets the color of the pixel at position
         [pos] in image data [id] to color [c]. If [pos] is
         outside the image bounds, this has no effect. *)
 
-    val importPNG : t -> pos:(int * int) -> string -> t React.event
+    val import_png : t -> pos:(int * int) -> string -> t React.event
     (** [importPNG id ~pos filename] loads the file [filename]
         into image data [id] at position [pos]. Any pixel that
         falls outside the image bounds is ignored. The returned
@@ -534,7 +534,7 @@ module V1 : sig
         {- {!Exception.Not_initialized} if {!Backend.init} was not called}
         {- {!Exception.Read_png_failed} if the PNG file could not be read}} *)
 
-    val exportPNG : t -> string -> unit
+    val export_png : t -> string -> unit
     (** [exportPNG id filename] saves the contents of image
         data [id] to a file with name [filename]
 
@@ -572,21 +572,21 @@ module V1 : sig
     type t
     (** An abstract type representing a gradient *)
 
-    val createLinear : pos1:Point.t -> pos2:Point.t -> t
+    val create_linear : pos1:Point.t -> pos2:Point.t -> t
     (** [createLinear ~pos1 ~pos2] creates a new linear gradient
         parallel to the line ([pos1], [pos2]) in window coordinates *)
 
-    val createRadial:
+    val create_radial:
       center1:Point.t -> rad1:float -> center2:Point.t -> rad2:float -> t
     (** [createRadial ~center1 ~rad1 ~center2 ~rad2] creates a new
         radial gradient between the disks with centers [center1] and
         [center2] and radi [rad1] and [rad2] in window coordinates *)
 
-    val createConic: center:Point.t -> angle:float -> t
+    val create_conic: center:Point.t -> angle:float -> t
     (** [createConic ~center ~angle] creates a new conic gradient
         with center [center] and initial angle [angle] *)
 
-    val addColorStop : t -> Color.t -> float -> unit
+    val add_color_stop : t -> Color.t -> float -> unit
     (** [addColorStop gradient color stop] adds a new [color]
         color spot in the gradient object at position [stop] *)
 
@@ -619,13 +619,13 @@ module V1 : sig
     val create : unit -> t
     (** [create ()] creates an empty path object. *)
 
-    val moveTo: t -> Point.t -> unit
+    val move_to: t -> Point.t -> unit
     (** [moveTo p pos] moves the path [p]'s brush position to [pos]. *)
 
     val close: t -> unit
     (** [close p] closes the path [p]. *)
 
-    val lineTo: t -> Point.t -> unit
+    val line_to: t -> Point.t -> unit
     (** [lineTo p pos] adds a straight line from
         the path [p]'s brush position to [pos]. *)
 
@@ -639,18 +639,18 @@ module V1 : sig
         subpath (if such point exists) will be connected to the
         first point of the arc by a straight line. *)
 
-    val arcTo :
+    val arc_to :
       t -> p1:Point.t -> p2:Point.t -> radius:float -> unit
     (** [arcTo p ~p1 ~p2 ~radius] adds an arc of the given [radius]
         using the control points [p1] and [p2] to the path [p].
         If the path [p] is empty, this behaves as if
         [moveTo p ~p:p1] was called. *)
 
-    val quadraticCurveTo : t -> cp:Point.t -> p:Point.t -> unit
+    val quadratic_curve_to : t -> cp:Point.t -> p:Point.t -> unit
     (** [quadraticCurveTo path ~cp ~p] adds a quadratic curve from
         [path]'s brush position to [~p] with control point [~cp]. *)
 
-    val bezierCurveTo :
+    val bezier_curve_to :
       t -> cp1:Point.t -> cp2:Point.t -> p:Point.t -> unit
     (** [bezierCurveTo path ~cp1 ~cp2 ~p] adds a bezier curve from
         [path]'s brush position to [~p] with control points [~cp1]
@@ -669,7 +669,7 @@ module V1 : sig
     val add : t -> t -> unit
     (** [add dst src] adds the path [src] into the path [dst] *)
 
-    val addTransformed : t -> t -> Transform.t -> unit
+    val add_transformed : t -> t -> Transform.t -> unit
     (** [addTransformed dst src t] adds the path [src] after
         applying [t] to each of its points into the path [dst] *)
 
@@ -763,7 +763,7 @@ module V1 : sig
 
     (** {1 Creation} *)
 
-    val createOnscreen :
+    val create_onscreen :
       ?autocommit:bool -> ?decorated:bool -> ?resizeable:bool ->
       ?minimize:bool -> ?maximize:bool -> ?close:bool -> ?title:string ->
       ?target:string -> ?pos:(int * int) -> size:(int * int) -> unit -> t
@@ -789,7 +789,7 @@ module V1 : sig
         {- {!Exception.Not_initialized} if {!Backend.init} was not called}
         {- {!Invalid_argument} if either component of [size] is outside the range 1-32767}} *)
 
-    val createOffscreen : size:(int * int) -> unit -> t
+    val create_offscreen : size:(int * int) -> unit -> t
     (** [createOffscreen ~size] creates an offscreen canvas of size [size]
 
         {b Exceptions:}
@@ -797,7 +797,7 @@ module V1 : sig
         {- {!Exception.Not_initialized} if {!Backend.init} was not called}
         {- {!Invalid_argument} if either component of [size] is outside the range 1-32767}} *)
 
-    val createOffscreenFromImageData : ImageData.t -> t
+    val create_offscreen_from_image_data : ImageData.t -> t
     (** [createOffscreenFromImageData id] creates an offscreen
         canvas with the contents of image data [id]
 
@@ -805,7 +805,7 @@ module V1 : sig
         {ul
         {- {!Exception.Not_initialized} if {!Backend.init} was not called}} *)
 
-    val createOffscreenFromPNG : string -> t React.event
+    val create_offscreen_from_png : string -> t React.event
     (** [createOffscreen filename] creates an offscreen canvas
         with the contents of PNG file [filename]. The returned
         event will be triggered once the image is loaded.
@@ -848,24 +848,24 @@ module V1 : sig
 
     (** {1 Configuration} *)
 
-    val getId : t -> int
+    val get_id : t -> int
     (** [getId c] returns the unique id of canvas [c] *)
 
-    val getSize : t -> (int * int)
+    val get_size : t -> (int * int)
     (** [getSize c] returns the size of canvas [c] *)
 
-    val setSize : t -> (int * int) -> unit
+    val set_size : t -> (int * int) -> unit
     (** [setSize c size] sets the size of canvas [c]
 
         {b Exceptions:}
         {ul
         {- {!Invalid_argument} if either component of [size] is outside the range 1-32767}} *)
 
-    val getPosition : t -> (int * int)
+    val get_position : t -> (int * int)
     (** [getPosition c] returns the position of canvas [c].
         Returns (0, 0) when used on offscreen cavnas. *)
 
-    val setPosition : t -> (int * int) -> unit
+    val set_position : t -> (int * int) -> unit
     (** [setPosition c pos] sets the position of canvas [c].
         Does nothing on offscreen canvases. *)
 
@@ -881,7 +881,7 @@ module V1 : sig
 
     (** {1 Transformations} *)
 
-    val setTransform : t -> Transform.t -> unit
+    val set_transform : t -> Transform.t -> unit
     (** [setTransform c t] sets the current transformation matrix of canvas [c].
         The matrix [t = { a, b, c, d, e, f }] is of the following form:
 {[
@@ -912,120 +912,120 @@ module V1 : sig
 
     (** {1 Style} *)
 
-    val getLineWidth : t -> float
+    val get_line_width : t -> float
     (** [getLineWidth c] returns the current line width of canvas [c] *)
 
-    val setLineWidth : t -> float -> unit
+    val set_line_width : t -> float -> unit
     (** [setLineWidth c w] sets the current line width of canvas [c] to [w] *)
 
-    val getLineJoin : t -> Join.t
+    val get_line_join : t -> Join.t
     (** [getLineJoin c] returns the current line join type of canvas [c] *)
 
-    val setLineJoin : t -> Join.t -> unit
+    val set_line_join : t -> Join.t -> unit
     (** [setLineJoin c j] sets the current line join type of canvas[c] to [j] *)
 
-    val getLineCap : t -> Cap.t
+    val get_line_cap : t -> Cap.t
     (** [getLineJoin c] returns the current line cap type of canvas [c] *)
 
-    val setLineCap : t -> Cap.t -> unit
+    val set_line_cap : t -> Cap.t -> unit
     (** [setLineJoin c j] sets the current line cap type of canvas[c] to [j] *)
 
-    val getMiterLimit : t -> float
+    val get_miter_limit : t -> float
     (** [getMiterLimit c] returns the current miter limit of canvas [c] *)
 
-    val setMiterLimit : t -> float -> unit
+    val set_miter_limit : t -> float -> unit
     (** [getMiterLimit c m] sets the current miter limit of canvas [c] to [m] *)
 
-    val getLineDashOffset : t -> float
+    val get_line_dash_offset : t -> float
     (** [getLineDashOffset c] returns the current line offset of [c] *)
 
-    val setLineDashOffset : t -> float -> unit
+    val set_line_dash_offset : t -> float -> unit
     (** [setLineDashOffset c t] sets the current line offset of [c] to [t] *)
 
-    val getLineDash : t -> float array
+    val get_line_dash : t -> float array
     (** [getLineDash c t] returns the current line dash pattern of [c] *)
 
-    val setLineDash : t -> float array -> unit
+    val set_line_dash : t -> float array -> unit
     (** [setLineDash c t] sets the current line dash pattern of [c] to [t] *)
 
-    val getStrokeColor : t -> Color.t
+    val get_stroke_color : t -> Color.t
     (** [getStrokeColor c] returns the current stroke color of canvas [c] *)
 
-    val setStrokeColor : t -> Color.t -> unit
+    val set_stroke_color : t -> Color.t -> unit
     (** [setStrokeColor c col] sets the current
         stroke color of canvas [c] to [col] *)
 
-    val setStrokeGradient : t -> Gradient.t -> unit
+    val set_stroke_gradient : t -> Gradient.t -> unit
     (** [setStrokeGradient c grad] sets the current stroke
         style of canvas [c] to the gradient [grad] *)
 
-    val setStrokePattern : t -> Pattern.t -> unit
+    val set_stroke_pattern : t -> Pattern.t -> unit
     (** [setStrokePattern c pat] sets the current stroke
         style of canvas [c] to the pattern [pat] *)
 
-    val getStrokeStyle : t -> Style.t
+    val get_stroke_style : t -> Style.t
     (** [getStrokeStyle c] returns the current stroke style of canvas [c] *)
 
-    val setStrokeStyle : t -> Style.t -> unit
+    val set_stroke_style : t -> Style.t -> unit
     (** [setStrokeStyle c style] sets the current stroke
         style of canvas [c] to style [style] *)
 
-    val getFillColor : t -> Color.t
+    val get_fill_color : t -> Color.t
     (** [getFillColor c] returns the current fill color of canvas [c] *)
 
-    val setFillColor : t -> Color.t -> unit
+    val set_fill_color : t -> Color.t -> unit
     (** [setFillColor c col] sets the current
         fill color of canvas [c] to [col] *)
 
-    val setFillGradient : t -> Gradient.t -> unit
+    val set_fill_gradient : t -> Gradient.t -> unit
     (** [setFillGradient c grad] sets the current fill
         style of canvas [c] to the gradient [grad] *)
 
-    val setFillPattern : t -> Pattern.t -> unit
+    val set_fill_pattern : t -> Pattern.t -> unit
     (** [setFillPattern c pat] sets the current fill
         style of canvas [c] to the pattern [pat] *)
 
-    val getFillStyle : t -> Style.t
+    val get_fill_style : t -> Style.t
     (** [getFillStyle c] return the current fill style of canvas [c] *)
 
-    val setFillStyle : t -> Style.t -> unit
+    val set_fill_style : t -> Style.t -> unit
     (** [setFillStyle c style] sets the current
         fill style of canvas [c] to style [style] *)
 
-    val getGlobalAlpha : t -> float
+    val get_global_alpha : t -> float
     (** [getGlobalAlpha c] returns the current global alpha of canvas [c] *)
 
-    val setGlobalAlpha : t -> float -> unit
+    val set_global_alpha : t -> float -> unit
     (** [setGlobalAlpha c a] sets the global alpha value of canvas[c] to [a] *)
 
-    val getGlobalCompositeOperation : t -> CompositeOp.t
+    val get_global_composite_operation : t -> CompositeOp.t
     (** [getGlobalCompositeOperation c] returns the global
         composite or blending operation of canvas[c] *)
 
-    val setGlobalCompositeOperation : t -> CompositeOp.t -> unit
+    val set_global_composite_operation : t -> CompositeOp.t -> unit
     (** [setGlobalCompositeOperation c o] sets the global
         composite or blending operation of canvas[c] to [o] *)
 
-    val getShadowColor : t -> Color.t
+    val get_shadow_color : t -> Color.t
     (** [setShadowColor c] returns the canvas [c]'s shadow color *)
 
-    val setShadowColor : t -> Color.t -> unit
+    val set_shadow_color : t -> Color.t -> unit
     (** [setShadowColor c col] sets the canvas [c]'s shadow color to [col] *)
 
-    val getShadowBlur : t -> float
+    val get_shadow_blur : t -> float
     (** [setShadowBlur c] returns the shadow blur radius of canvas [c]  *)
 
-    val setShadowBlur : t -> float -> unit
+    val set_shadow_blur : t -> float -> unit
     (** [setShadowBlur c b] sets the shadow blur radius of canvas [c] to [b] *)
 
-    val getShadowOffset : t -> Vector.t
+    val get_shadow_offset : t -> Vector.t
     (** [setShadowOffset c] returns the offset of the shadows drawn in [c] *)
 
-    val setShadowOffset : t -> Vector.t -> unit
+    val set_shadow_offset : t -> Vector.t -> unit
     (** [setShadowOffset c o] sets the offset
         of the shadows drawn in [c] to [o] *)
 
-    val setFont :
+    val set_font :
       t -> string -> size:Font.size ->
       slant:Font.slant -> weight:Font.weight -> unit
     (** [setFont c family ~size ~slant ~weight] sets the current
@@ -1035,23 +1035,23 @@ module V1 : sig
 
     (** {1 Path} *)
 
-    val clearPath : t -> unit
+    val clear_path : t -> unit
     (** [clearPath c] resets the path of canvas [c] *)
 
-    val closePath : t -> unit
+    val close_path : t -> unit
     (** [closePath c] closes the current subpath of canvas [c], i.e. adds a
         line from the last point in the current subpath to the first point,
         and marks the subpath as closed. Does nothing if the subpath is empty
         or has a single point, or if the subpath is already closed. *)
 
-    val moveTo : t -> Point.t -> unit
+    val move_to : t -> Point.t -> unit
     (** [moveTo c p] starts a new subpath in canvas [c] containing the
         single point [p]. If the current subpath is empty, its first
         point is set to this point, instead of creating a new subpath.
         Likewise, if the current subpath has a single point, it is
         simply replaced by the given point. *)
 
-    val lineTo : t -> Point.t -> unit
+    val line_to : t -> Point.t -> unit
     (** [lineTo c p] adds the point [p] to the current subpath of canvas [c].
         If the current subpath is empty, this behaves just like [moveTo c ~p].*)
 
@@ -1065,18 +1065,18 @@ module V1 : sig
         (if such point exists) will be connected to the first point of the
         arc by a straight line. *)
 
-    val arcTo : t -> p1:Point.t -> p2:Point.t -> radius:float -> unit
+    val arc_to : t -> p1:Point.t -> p2:Point.t -> radius:float -> unit
     (** [arcTo c ~p1 ~p2 ~radius] adds an arc of the given [radius]
         using the control points [p1] and [p2] to the current
         subpath of canvas [c]. If the current subpath is empty,
         this behaves as if [moveTo c ~p:p1] was called. *)
 
-    val quadraticCurveTo : t -> cp:Point.t -> p:Point.t -> unit
+    val quadratic_curve_to : t -> cp:Point.t -> p:Point.t -> unit
     (** [quadraticCurveTo c ~cp ~p] adds a quadratic Bezier curve
         using the control point [cp] and the end point [p]
         to the current subpath of canvas [c] *)
 
-    val bezierCurveTo :
+    val bezier_curve_to :
       t -> cp1:Point.t -> cp2:Point.t -> p:Point.t -> unit
     (** [bezierCurve c ~cp1 ~cp2 ~p] adds a cubic Bezier curve using
         the control points [cp1] and [cp2] and the end point [p]
@@ -1099,7 +1099,7 @@ module V1 : sig
     (** [fill c ~nonzero] fills the current subpath of canvas [c]
         using the current fill color and the specified fill rule *)
 
-    val fillPath : t -> Path.t -> nonzero:bool -> unit
+    val fill_path : t -> Path.t -> nonzero:bool -> unit
     (** [fillPath c p ~nonzero] fills the path [p] on canvas [c]
         using the current fill style and the specified fill rule *)
 
@@ -1107,7 +1107,7 @@ module V1 : sig
     (** [stroke c] draws the outline of the current subpath of
         canvas [c] using the current stroke color and line width *)
 
-    val strokePath : t -> Path.t -> unit
+    val stroke_path : t -> Path.t -> unit
     (** [strokePath c p] draws the outline of the path [p] on
         canvas [c] using the current stroke style and line width *)
 
@@ -1115,27 +1115,27 @@ module V1 : sig
     (** [clipPath c p ~nonzero] intersects the current subpath of [c]
         on canvas [c]'s clip region using the specified fill rule *)
 
-    val clipPath : t -> Path.t -> nonzero:bool -> unit
+    val clip_path : t -> Path.t -> nonzero:bool -> unit
     (** [clipPath c p ~nonzero] intersects the filled path [p] on
         canvas [c]'s clip region using the specified fill rule *)
 
 
     (** {1 Immediate drawing} *)
 
-    val fillRect : t -> pos:Point.t -> size:Vector.t -> unit
+    val fill_rect : t -> pos:Point.t -> size:Vector.t -> unit
     (** [fillRect c ~pos ~size] immediatly fills the rectangle specified by
         [pos] and [size] to the canvas [c] using the current fill color *)
 
-    val strokeRect : t -> pos:Point.t -> size:Vector.t -> unit
+    val stroke_rect : t -> pos:Point.t -> size:Vector.t -> unit
     (** [strokeRect c ~pos ~size] immediatly draws the outline of
         the rectangle specified by [pos] and [size] to the canvas
         [c] using the current stroke color and line width *)
 
-    val fillText : t -> string -> Point.t -> unit
+    val fill_text : t -> string -> Point.t -> unit
     (** [fillText c text pos] immediatly draws the text [text] at
         position [pos] on the canvas [c] using the current fill color *)
 
-    val strokeText : t -> string -> Point.t -> unit
+    val stroke_text : t -> string -> Point.t -> unit
     (** [strokeText c text pos] immediatly draws the outline of text [text]
         at position [pos] on the canvas [c] using the current stroke color
         and line width *)
@@ -1159,17 +1159,17 @@ module V1 : sig
         be slow and are not meant for updating the contents of a canvas in
         real-time. Better use them on offscreen canvas during loading phases. *)
 
-    val getPixel : t -> (int * int) -> Color.t
+    val get_pixel : t -> (int * int) -> Color.t
     (** [getPixel c pos] returns the color of the pixel at position
         [pos] in canvas [c]. If [pos] is outside the canvas
         bounds, returns the transparent black color. *)
 
-    val putPixel : t -> (int * int) -> Color.t -> unit
+    val put_pixel : t -> (int * int) -> Color.t -> unit
     (** [putPixel c pos col] sets the color of the pixel at position
         [pos] in canvas [c] to color [col]. If [pos] is
         outside the canvas bounds, this has no effect. *)
 
-    val getImageData :
+    val get_image_data :
       t -> pos:(int * int) -> size:(int * int) -> ImageData.t
     (** [getImageData c ~pos ~size] returns a copy of the pixel
         data at position [pos] of size [size] in canvas [c].
@@ -1180,7 +1180,7 @@ module V1 : sig
         {ul
         {- {!Invalid_argument} if either component of [size] is outside the range 1-32767}} *)
 
-    val putImageData :
+    val put_image_data :
       t -> dpos:(int * int) -> ImageData.t ->
       spos:(int * int) -> size:(int * int) -> unit
     (** [setImageData c ~dpos id ~spos ~size] overwrite the pixels
@@ -1193,7 +1193,7 @@ module V1 : sig
         {ul
         {- {!Invalid_argument} if either component of [size] is outside the range 1-32767}} *)
 
-    val importPNG :
+    val import_png :
       t -> pos:(int * int) -> string -> t React.event
     (** [importPNG c ~pos filename] loads the file [filename]
         into canvas [c] at position [pos]. The returned
@@ -1203,7 +1203,7 @@ module V1 : sig
         {ul
         {- {!Exception.Read_png_failed} if the PNG file could not be read}} *)
 
-    val exportPNG : t -> string -> unit
+    val export_png : t -> string -> unit
     (** [exportPNG c filename] saves the contents of
         canvas [c] to a file with name [filename]
 
@@ -1542,7 +1542,7 @@ module V1 : sig
         {ul
         {- {!Exception.Not_initialized} if {!Backend.init} was not called}} *)
 
-    val getCanvas : int -> Canvas.t
+    val get_canvas : int -> Canvas.t
     (** [getCanvas i] returns the canvas that has id [i], if it exists
 
         {b Exceptions:}
@@ -1550,7 +1550,7 @@ module V1 : sig
         {- {!Exception.Not_initialized} if {!Backend.init} was not called}
         {- {!Not_found} if no canvas has id [i]}} *)
 
-    val getCurrentTimestamp : unit -> Event.timestamp
+    val get_current_timestamp : unit -> Event.timestamp
     (** [getCurrentTimestamp ()] returns the current timestamp
         in microseconds, from an arbitrary starting point
 
