@@ -1,6 +1,0 @@
-
-(executable
- (name make_index)
- (modes byte_complete native)
- (modules make_index)
- (libraries str))
