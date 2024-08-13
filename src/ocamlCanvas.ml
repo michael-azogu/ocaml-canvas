@@ -740,7 +740,7 @@ module V1 = struct
     external move_to : t -> Point.t -> unit
       = "ml_canvas_move_to"
 
-    external line_To : t -> Point.t -> unit
+    external line_to : t -> Point.t -> unit
       = "ml_canvas_line_to"
 
     external arc :
